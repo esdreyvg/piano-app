@@ -52,7 +52,7 @@ const PianoVirtual: React.FC<PianoVirtualProps> = ({
       {modo === "beginner" && (
         <div style={{ marginTop: 20 }}>
           {notaTocada !== null && (
-            <div style={{ fontSize: 32, color: "white" }}>
+            <div style={{ fontSize: 32 }}>
               Nota tocada: {MidiNumbers.getAttributes(notaTocada).note}
             </div>
           )}
