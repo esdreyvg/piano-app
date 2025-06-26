@@ -1,0 +1,50 @@
+.piano-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  max-width: 90vw;
+  width: 100%;
+  padding: 2rem 1rem;
+  max-width: 100vw;
+}
+
+.piano-note-display {
+  margin-top: 1.5rem;
+  font-size: 2.5rem;
+  color: #ffffff;
+  background-color: #222;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.piano-error {
+  color: #ff4d4f;
+  font-weight: bold;
+  font-size: 1.8rem;
+  background-color: #fff2f2;
+  border-left: 6px solid #ff4d4f;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  max-width: 90%;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .piano-note-display {
+    font-size: 2rem;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .piano-error {
+    font-size: 1.2rem;
+    padding: 0.75rem;
+  }
+}

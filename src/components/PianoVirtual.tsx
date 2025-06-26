@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Piano, KeyboardShortcuts, MidiNumbers } from "react-piano";
 import { PianoVirtualProps } from "../interface/PianoVirtual";
 import "react-piano/dist/styles.css";
+import "../assets/pianoVirtual.css";
 
 
 const firstNote = MidiNumbers.fromNote("c3");
@@ -16,7 +17,6 @@ const keyboardShortcuts = KeyboardShortcuts.create({
 const PianoVirtual: React.FC<PianoVirtualProps> = ({
   highlightedNotes = [],
   onPlayNote,
-  playNote,
   modo = "beginner",
   notaCorrecta,
   notaIncorrecta,
@@ -26,7 +26,6 @@ const PianoVirtual: React.FC<PianoVirtualProps> = ({
 
   const handlePlayNote = (midi: number) => {
     setNotaTocada(midi);
-    if (playNote) playNote(midi); // usa la función de App.tsx
     if (onPlayNote) onPlayNote(midi);
 
     if (notaCorrecta !== undefined && modo === "beginner") {
@@ -39,20 +38,20 @@ const PianoVirtual: React.FC<PianoVirtualProps> = ({
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div className="piano-container">
       <Piano
         noteRange={{ first: firstNote, last: lastNote }}
         playNote={handlePlayNote}
-        stopNote={() => {}}
+        stopNote={() => { }}
         activeNotes={highlightedNotes}
         width={Math.min(window.innerWidth * 0.9, 1000)}
         keyboardShortcuts={keyboardShortcuts}
       />
 
       {modo === "beginner" && (
-        <div style={{ marginTop: 20 }}>
+        <>
           {notaTocada !== null && (
-            <div style={{ fontSize: 32 }}>
+            <div className="piano-note-display">
               Nota tocada: {MidiNumbers.getAttributes(notaTocada).note}
             </div>
           )}
@@ -62,16 +61,17 @@ const PianoVirtual: React.FC<PianoVirtualProps> = ({
             typeof notaCorrecta === "number" &&
             notaIncorrecta >= 0 && notaIncorrecta <= 127 &&
             notaCorrecta >= 0 && notaCorrecta <= 127 && (
-              <div style={{ color: "red", fontWeight: "bold", fontSize: 28, marginTop: 15 }}>
+              <div className="piano-error">
                 ❌ Nota incorrecta: {MidiNumbers.getAttributes(notaIncorrecta).note}
                 <br />
                 🎯 Nota esperada: {MidiNumbers.getAttributes(notaCorrecta).note}
               </div>
             )}
-        </div>
+        </>
       )}
     </div>
   );
+
 };
 
 export default PianoVirtual;

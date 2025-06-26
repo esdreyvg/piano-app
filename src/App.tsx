@@ -7,6 +7,7 @@ import PianoVirtual from "./components/PianoVirtual";
 import ScreenDivider from "./components/ScreenDividier";
 import { Note } from "./interface/Note";
 import * as Tone from "tone";
+import "./assets/home.css";
 
 type Experience = "beginner" | "advanced";
 
@@ -28,7 +29,17 @@ const App: React.FC = () => {
             ? [notaResaltada]
             : [];
 
-    const handleNotePlayed = (midi: number) => {
+    const playNote = async (midi: number) => {
+        await Tone.start();
+        const synth = new Tone.PolySynth().toDestination();
+        synth.triggerAttackRelease(
+            Tone.Frequency(midi, "midi").toFrequency(),
+            0.5
+        );
+    };
+
+    const handleNotePlayed = async (midi: number) => {
+        playNote(midi);
         if (!notasCancion || notaActualIndex >= notasCancion.length) return;
 
         const notaEsperada = notasCancion[notaActualIndex].pitch;
@@ -46,15 +57,6 @@ const App: React.FC = () => {
         setNotaActualIndex(0);
         setNotaIncorrecta(null);
         setNotes([]);
-    };
-
-    const playNote = async (midi: number) => {
-        await Tone.start();
-        const synth = new Tone.PolySynth().toDestination();
-        synth.triggerAttackRelease(
-            Tone.Frequency(midi, "midi").toFrequency(),
-            0.5
-        );
     };
 
     const playAllNotes = async () => {
@@ -78,33 +80,26 @@ const App: React.FC = () => {
     if (hasPiano === null) return <PianoOwnership onAnswer={setHasPiano} />;
 
     return (
-        <div style={{ padding: 20 }}>
-            <h1>
-                Sistema Web de Piano -{" "}
+        <div className="app-container">
+            <h1 className="app-title">
+                Sistema Web de Piano –{" "}
                 {experience === "beginner" ? "Principiante" : "Avanzado"}
             </h1>
 
             {/* Barra de progreso */}
-            {notasCancion && notasCancion.length > 0 && notaActualIndex < notasCancion.length && (
-                <div
-                    style={{
-                        background: "#444",
-                        borderRadius: 10,
-                        overflow: "hidden",
-                        margin: "20px 0",
-                        height: 25,
-                    }}
-                >
-                    <div
-                        style={{
-                            width: `${(notaActualIndex / notasCancion.length) * 100}%`,
-                            background: notaIncorrecta === null ? "limegreen" : "crimson",
-                            height: "100%",
-                            transition: "width 0.3s ease",
-                        }}
-                    />
-                </div>
-            )}
+            {notasCancion &&
+                notasCancion.length > 0 &&
+                notaActualIndex < notasCancion.length && (
+                    <div className="progress-bar">
+                        <div
+                            className="progress-bar-fill"
+                            style={{
+                                width: `${(notaActualIndex / notasCancion.length) * 100}%`,
+                                backgroundColor: notaIncorrecta === null ? "limegreen" : "crimson",
+                            }}
+                        />
+                    </div>
+                )}
 
             {/* Cancionero */}
             {!notasCancion && (
@@ -120,11 +115,9 @@ const App: React.FC = () => {
             {/* Mensaje de éxito */}
             {notasCancion &&
                 notaActualIndex >= notasCancion.length && (
-                    <div style={{ marginTop: 30, textAlign: "center" }}>
-                        <h2 style={{ color: "lime", fontSize: 28 }}>
-                            🎉 ¡Felicidades! Completaste la canción correctamente.
-                        </h2>
-                        <button onClick={handleElegirOtraCancion} style={{ marginTop: 20 }}>
+                    <div className="success-message">
+                        <h2>🎉 ¡Felicidades! Completaste la canción correctamente.</h2>
+                        <button onClick={handleElegirOtraCancion} className="success-button">
                             Elegir otra canción
                         </button>
                     </div>
@@ -142,7 +135,6 @@ const App: React.FC = () => {
                         modo={experience}
                         highlightedNotes={highlightedNotes}
                         onPlayNote={handleNotePlayed}
-                        playNote={playNote}
                         notaCorrecta={notaResaltada ?? undefined}
                         notaIncorrecta={notaIncorrecta}
                     />
@@ -150,6 +142,7 @@ const App: React.FC = () => {
             )}
         </div>
     );
+
 };
 
 export default App;
