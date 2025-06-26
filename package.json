@@ -10,7 +10,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "test": "npx vitest run"
   },
   "dependencies": {
     "@types/meyda": "^4.3.8",
@@ -22,6 +23,10 @@
     "tone": "^15.1.22"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.13.1",
     "@types/react": "^18.3.22",
     "@types/react-dom": "^18.3.7",
@@ -32,7 +37,11 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "gh-pages": "^6.3.0",
+    "jest": "^30.0.3",
+    "jest-canvas-mock": "^2.5.2",
+    "jsdom": "^26.1.0",
     "typescript": "^5.8.3",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vitest": "^3.2.4"
   }
 }
